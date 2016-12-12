@@ -1,0 +1,9 @@
+#!/bin/sh
+export GIT_SSH=/home/wiki/bin/frontend.ssh
+export GIT_DIR=/home/wiki/frontend.git
+export GIT_WORK_TREE=/home/wiki/frontend
+
+/bin/git fetch
+/bin/git pull
+/bin/git checkout master
+/bin/git reset --hard

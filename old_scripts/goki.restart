@@ -1,0 +1,4 @@
+#!/bin/sh
+/usr/bin/systemctl stop goki
+/bin/rm -rf /home/wiki/index/*
+/usr/bin/systemctl restart goki

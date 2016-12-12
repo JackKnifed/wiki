@@ -1,0 +1,135 @@
+<html>
+
+<!-- mockup -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>loadwatch</title>
+	<link rel="stylesheet" type="text/css" href="simplex.css">
+	<link rel="stylesheet" type="text/css" href="highlight/darkula.css">
+	<script src="highlight.pack.js"></script>
+	<script src="goki.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function(event) { 
+			hljs.initHighlightingOnLoad();
+			fixAlertBoxes();
+		});
+	</script>
+</head>
+
+<body>
+		<div class="col-lg-2 col-md-3 col-sm-12 col-xs-12 pull-right">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<a href="http://localhost:8080/tag/">
+						<h3 class="panel-title">Topics on this page</h3>
+					</a>
+				</div>
+				<div class="panel-body">
+					<a class="btn btn-sm btn-info" href="http://localhost:8080/topic/performance/">performance</a>
+				</div>
+			</div>
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<a href="http://localhost:8080/author/">
+						<h3 class="panel-title">This page written by</h3>
+					</a>
+				</div>
+				<div class="panel-body">
+					<a class="btn btn-sm btn-success" href="http://localhost:8080/author/jack/">jack</a>
+				</div>
+			</div>
+			<div class="list-group table-of-contents">
+				<nav>
+					<a class="list-group-item" href="http://localhost:8080/loadwatch#installation">Installation</a>
+					<a class="list-group-item" href="http://localhost:8080/loadwatch#reading-output">Reading Output</a>
+					<a class="list-group-item" href="http://localhost:8080/loadwatch#emailing-output">Emailing Output</a>
+				</nav>
+			</div>
+		</div>
+		<div id="body" class="markdown-body col-lg-offset-1 col-lg-9 col-md-9 pull-left">
+			<h1>loadwatch</h1>
+			<p>Loadwatch is nothing more than a list of commands that automatically run on a server when the server is experiencing high
+				load. The output from these commands are then stored in a file for analysis later - if needed.</p>
+			<p>Loadwatch has two important requirements:</p>
+			<ul>
+				<li>It cannot cause load</li>
+				<li>It has to run quickly</li>
+			</ul>
+			<h2 id="installation">Installation</h2>
+			<p>Drop this stuff into CLI</p>
+			<pre><code class="language-bash">mkdir -p /root/loadwatch /root/bin
+touch /root/bin/loadwatch.sh
+chmod 700 /root/bin/loadwatch.sh
+touch /etc/plbakeloadwatchinstalled
+echo "*/3 * * * * /usr/bin/flock -n /dev/shm/loadwatch.lock -c /root/bin/loadwatch.sh &gt; /dev/null 2&gt;&amp;1" &gt;&gt; /var/spool/cron/root
+echo "0 1 * * * /usr/bin/find /root/loadwatch -type f -mtime +30 -delete" &gt;&gt; /var/spool/cron/root
+echo "0 2 * * 0 /usr/bin/tail -n100000 /root/loadwatch/checklog &gt; /root/loadwatch/checklog.new; mv -f /root/loadwatch/checklog.new /root/loadwatch/checklog" &gt;&gt; /var/spool/cron/root
+vim /root/bin/loadwatch.sh</code></pre>
+			<p>Insert the script in with vim</p>
+			<pre><code class="language-bash">#!/bin/bash
+FILE=loadwatch.`date +%F.%H.%M`
+DIR=/root/loadwatch
+#Load Threshold for doing a dump.
+LOADTHRESH=auto
+SQLTHRESH=25http://i.imgur.com/O6Sz5LL.jpg
+MEMTHRESH=80
+SWAPTHRESH=20
+APACHETHRESH=120
+
+if [[ $LOADTHRESH -eq "auto" ]]
+then
+	LOADTHRESH=$(expr $(/bin/grep -c processor /proc/cpuinfo) / 2  + 7)
+fi
+
+LOAD=`cat /proc/loadavg | awk '{print $1}' | awk -F '.' '{print $1}'`
+
+read MEM SWAP &lt;&lt;&lt;$(awk '{
+	gsub(":$","",$1); m[$1] = $2
+	} END {
+		printf "%d ", ((m["MemTotal"]-m["MemFree"]-m["Buffers"]-m["Cached"])/m["MemTotal"])*100;
+		printf "%d\n",((m["SwapTotal"]-m["SwapCached"]-m["SwapFree"])/m["SwapTotal"])*100;
+	}' /proc/meminfo)
+
+CURSQL=`/usr/bin/mysqladmin stat|awk '{print $4}'`
+
+HISTSQL=`/usr/bin/mysql -Bse 'show global status LIKE "Max_used_connections";'|awk '{print $2}'`
+
+APACHECONN=$(/usr/sbin/httpd status |awk '/requests\ currently\ being\ processed,/ {print $1}')
+
+# checks to see if $APACHECONN is numeric
+if [[ $APACHECONN != *[0-9]* ]]
+then
+	APACHEFALLBACK=yes
+	APACHECONN=$(netstat -nt|awk 'BEGIN{n=0} $4 ~ /:(443|80|89)$/ { n++; } END { print n;}')
+fi
+
+echo `date +%F.%X` - Load: $LOAD Mem: $MEM Swap: $SWAP MySQL conn: $CURSQL Highest MySQL conn: $HISTSQL Current httpd conn: $APACHECONN &gt;&gt; $DIR/checklog
+
+if [ $LOAD -gt $LOADTHRESH ] || [ $MEM -gt $MEMTHRESH ] || [ $SWAP -gt $SWAPTHRESH ] || [ $CURSQL -gt $SQLTHRESH ] || [ $APACHECONN -gt $APACHETHRESH ]
+then
+	echo Loadwatch tripped, dumping info to $DIR/$FILE &gt;&gt; $DIR/checklog
+	echo `date +%F.%H.%M` &gt; $DIR/$FILE
+	free -m &gt;&gt; $DIR/$FILE
+	uptime &gt;&gt; $DIR/$FILE
+	mysqladmin processlist stat &gt;&gt; $DIR/$FILE
+	/bin/netstat -nut|awk '$4 ~ /:(80|443)/ {gsub(/:[0-9]*$/, "", $5); print $5, $6}'|sort|uniq -c|sort -n|tail -n50 &gt;&gt; $DIR/$FILE
+	top -bcn1 &gt;&gt; $DIR/$FILE
+	ps auxf &gt;&gt; $DIR/$FILE
+	[ ! -z "$APACHEFALLBACK" ] &amp;&amp; echo "Apache Fallback Triggered" || /sbin/service httpd fullstatus &gt;&gt; $DIR/$FILE 2&gt; /dev/null
+fi</code></pre>
+			<p>Once you’ve run that block, you will likely want to go back into <code>/root/bin/loadwatch.sh</code> and adjust the threshold
+				settings. You will also want to check over <code>/var/spool/cron/root</code> and remove any duplicate cron tasks.</p>
+			<h2 id="reading-output">Reading Output</h2>
+			<p>Loadwatch spits out command output. They’re the output from the commands. Go read the files and learn what’s going on.</p>
+			<p>If you really cannot log into the server, you can mount <code>/root/loadwatch/</code> locally on your computer via sshfs:</p>
+			<pre><code class="language-bash">sshfs root@127.0.0.1:/root/loadwatch/ ~/local_mountpoint/</code></pre>
+			<h2 id="emailing-output">Emailing Output</h2>
+			<p>Some customers want to have the output from <code>loadwatch</code> emailed to them. This is a bad idea. This creates an
+				email and attempts to deliver it to the customer during a period of high load - a bad idea.</p>
+			<p>Still, you said they wanted it. W/e. It’s a bad idea. I said it’s a bad idea. Let’s move on. Add the following line at
+				the bottom of the file <code>/root/bin/loadwatch.sh</code>:</p>
+			<pre><code class="language-bash">cat $DIR/$FILE | mail -s "Loadwatch Report" "the_customers@email.address" &gt;&gt; $DIR/$FILE</code></pre>
+		</div>
+</body>
+
+</html>

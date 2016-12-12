@@ -1,0 +1,57 @@
+<html>
+
+<!-- mockup -->
+<head>
+	<title name="titleLine">Listing Topics</title>
+	<link rel="stylesheet" type="text/css" href="simplex.css">
+	<script type="application/javascript" src="goki.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function(event) { 
+			replaceCurrentTitleForTag("Pages related to", 1);
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="jumbotron col-md-8 col-md-offset-2">
+				<h1 name="titleLine">Listing Topics</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-group form-group col-md-8 col-md-offset-2">
+				<span class="input-group-addon">topic</span>
+				<input type="text" class="form-control" id="dest" value="mysql">
+				<span class="input-group-btn">
+				<button class="btn btn-info" type="button"
+					onclick="pageRedirect('/topic/');">Switch</button>
+			</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="list-group col-md-10 col-md-offset-1" id="results">
+				<a href="/mysql/cPanel_upgrade" class="list-group-item">
+					<h4 class="list-group-item-heading">
+						Loadwatch
+					</h4>
+					<p class="list-group-item-text">
+						Loadwatch is nothing more than a list of commands that automatically run on a server when the server is experiencing high
+						load. The output from these commands are then stored in a file for analysis later - if needed.
+					</p>
+				</a>
+				<a href="/mysql/cPanel_upgrade" class="list-group-item">
+					<h4 class="list-group-item-heading">
+						Loadwatch
+					</h4>
+					<p class="list-group-item-text">
+						Loadwatch is nothing more than a list of commands that automatically run on a server when the server is experiencing high
+						load. The output from these commands are then stored in a file for analysis later - if needed.
+					</p>
+				</a>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

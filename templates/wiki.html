@@ -1,0 +1,53 @@
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="/static/css/simplex.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/highlight/darkula.css">
+	<script src="/static/js/highlight.pack.js"></script>
+	<script src="/static/js/goki.js"></script>
+	<script>
+			document.addEventListener("DOMContentLoaded", function(event) { 
+				hljs.initHighlightingOnLoad();
+				fixAlertBoxes();
+			});
+		</script> {{range .Keywords}}
+	<meta name="keywords" content="{{.}}"> {{end}}
+	<title>{{.Title}}</title>
+</head>
+
+<body>
+
+	<div class="col-lg-2 col-md-3 col-sm-12 col-xs-12 pull-right">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<a href="/topic">
+					<h3 class="panel-title">Topics on this page</h3>
+				</a>
+			</div>
+			<div class="panel-body">
+				{{range .Topics}}
+				<a class="btn btn-sm btn-info" href="/topic/{{.}}">{{.}}</a> {{end}}
+			</div>
+		</div>
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<a href="/author">
+					<h3 class="panel-title">This page written by</h3>
+				</a>
+			</div>
+			<div class="panel-body">
+				{{range .Authors}}
+				<a class="btn btn-sm btn-success" href="/author/{{.}}">{{.}}</a> {{end}}
+			</div>
+		</div>
+		<div class="list-group table-of-contents">
+			{{.ToC}}
+		</div>
+	</div>
+	<div id="body" class="markdown-body col-lg-offset-1 col-lg-9 col-md-9 pull-left">
+		{{.Body}}
+	</div>
+</body>
+
+</html>

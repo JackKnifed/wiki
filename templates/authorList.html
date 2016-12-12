@@ -1,0 +1,59 @@
+<html>
+
+<head>
+	<title name="titleLine">Listing Authors</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/simplex.css">
+	<script type="application/javascript" src="/static/css/goki.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function(event) { 
+			replaceCurrentTitleForTag("Pages written by",1);
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="jumbotron col-md-8 col-md-offset-2">
+				<!-- probably do something here to list the topics and the current topic -->
+				<h1 name="titleLine">Listing Authors</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-group form-group col-md-8 col-md-offset-2">
+				<span class="input-group-addon">author</span>
+				<input type="text" class="form-control" id="dest" value="mysql">
+				<span class="input-group-btn">
+				<button class="btn btn-success" type="button"
+					onclick="pageRedirect('/topic/');">Switch</button>
+			</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="list-group col-md-10 col-md-offset-1" id="results">
+				{{ range .Results}}
+				<a href="/{{.URIPath}}" class="list-group-item">
+					<h4 class="list-group-item-heading">
+						{{.Title}}
+					</h4>
+					<p class="list-group-item-text">
+						{{range .Topics}}
+						<span class="label label-info">
+							{{.}}
+						</span>
+						{{end}}
+						{{range .Authors}}
+						<span class="label label-success">
+							{{.}}
+						</span>
+						{{end}}
+						{{.Body}}
+					</p>
+				</a>
+				{{end}}
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

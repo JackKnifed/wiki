@@ -1,0 +1,105 @@
+<html>
+
+<head>
+	<title>Listing Tags</title>
+	<link rel="stylesheet" href="/static/css/material.min.css">
+	<script src="/static/js/material.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" type="text/css" href="/static/css/simplex.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/highlight/default.css">
+	<script src="/static/js/highlight.pack.js"></script>
+	<script src="/static/js/gnosis.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	<!--<link rel="stylesheet" type="text/css" href="/site/css/search.css">-->
+	<style>
+		.demo-card-wide.mdl-card {
+			width: 512px;
+		}
+		
+		.demo-card-wide > .mdl-card__title {
+			color: #fff;
+			height: 176px;
+			background: url('../assets/demos/welcome_card.jpg') center / cover;
+		}
+		
+		.demo-card-wide > .mdl-card__menu {
+			color: #fff;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<!-- Title -->
+				<span class="mdl-layout-title">Listing Tags</span>
+				<!-- Add spacer, to align navigation to the right -->
+				<div class="mdl-layout-spacer"></div>
+
+				<!-- list of topics -->
+				<button id="topic-menu-chooser" class="mdl-button mdl-js-button">
+                    Topics
+                    <i class="material-icons">more_vert</i>
+                </button>
+				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu
+                mdl-js-ripple-effect" for="topic-menu-chooser">
+					{{with .Topics}} {{range .}}
+					<a href="/topic/{{.}}">
+						<li class="mdl-menu__item">
+							{{.}}
+						</li>
+					</a>
+					{{end}} {{end}}
+				</ul>
+
+				<!-- list of authors -->
+				<button id="author-menu-chooser" class="mdl-button mdl-js-button">
+                    Authors
+                    <i class="material-icons">more_vert</i>
+                </button>
+				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu
+                mdl-js-ripple-effect" for="author-menu-chooser">
+					{{with .Authors}} {{range .}}
+					<a href="/author/{{.}}">
+						<li class="mdl-menu__item">
+							{{.}}
+						</li>
+					</a>
+					{{end}} {{end}}
+				</ul>
+			</div>
+		</header>
+	</div>
+	<main class="mdl-layout__content">
+		<div class="page-content">
+			{{range .Results}}
+			<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+				<div class="mdl-card__title">
+					<h2 class="mdl-card__title-text">{{ .Title }}</h2>
+				</div>
+				<div class="mdl-card__supporting-text">
+					{{.Body}}
+				</div>
+				<div class="mdl-card__actions mdl-card--border">
+					<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{{.URIPath}}">
+                            {{.Title}}
+                        </a>
+				</div>
+
+			</div>
+			{{ else }}
+			<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+				<div class="mdl-card__title">
+					<h2 class="mdl-card__title-text">Welcome</h2>
+				</div>
+				<div class="mdl-card__supporting-text">
+					In order to view articles, you must pick an author or topic from the navigation.
+				</div>
+			</div>
+			{{ end }}
+		</div>
+	</main>
+</body>
+
+</html>

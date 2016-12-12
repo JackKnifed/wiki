@@ -1,0 +1,3 @@
+11 */1 * * * wiki /home/wiki/bin/frontend.pull > /dev/null
+34 */8 * * * root /home/wiki/bin/backend.pull > /dev/null
+48 */8 * * * root /home/wiki/goki.restart > /dev/null

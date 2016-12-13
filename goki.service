@@ -1,0 +1,17 @@
+[Unit]
+Description=goki
+After=iptables.service
+Requires=iptables.service
+After=rsyslog.service
+Requires=rsyslog.service
+After=network.target
+Requires=network.target
+
+[Service]
+#User=wiki
+ExecStart=/usr/local/bin/goki --config=/var/www/config.json
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+

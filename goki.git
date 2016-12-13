@@ -1,0 +1,10 @@
+#!/bin/sh
+export GIT_SSH=/var/www/git.ssh
+export GIT_DIR=/var/www/.git
+export GIT_WORK_TREE=/var/www
+
+/bin/git fetch
+/bin/git checkout master
+/bin/git pull
+/bin/git clean -f -d
+/bin/git reset --hard

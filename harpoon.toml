@@ -1,0 +1,10 @@
+port = 81
+addr = "0.0.0.0"
+# tunneling stuff
+#tunnel = true
+#tunnelName = "foobarbazz"
+
+[events."push:JackKnifed/goki:refs/heads/master"]
+cmd = "/bin/sh"
+args = "/var/www/goki.pull"
+

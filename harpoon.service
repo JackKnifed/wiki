@@ -1,0 +1,15 @@
+[Unit]
+Description=Harpoon server
+After=network.target
+AssertFileNotEmpty=/usr/local/bin/harpoon
+AssertFileIsExecutable=/usr/local/bin/harpoon
+
+[Service]
+User=%i
+Type=simple
+Environment=GITHUB_HOOK_SECRET_TOKEN=""
+ExecStart=/usr/local/bin/harpoon -c /var/www/harpoon.toml
+Nice=5
+
+[Install]
+WantedBy=multi-user.target

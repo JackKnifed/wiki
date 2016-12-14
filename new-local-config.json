@@ -30,7 +30,7 @@
 			"IndexName": "wiki",
 			"Restricted": [
 				"internal",
-				"handbookt"
+				"handbook"
 			],
 			"Handlers": [
 				{

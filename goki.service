@@ -5,7 +5,7 @@ Requires=network.target
 
 [Service]
 #User=wiki
-ExecStart=/usr/local/bin/goki --config=/var/www/config.json
+ExecStart=/usr/local/bin/goki --config=/home/wiki/config.json
 Restart=on-failure
 
 [Install]

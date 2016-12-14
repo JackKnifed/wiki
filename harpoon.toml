@@ -6,5 +6,5 @@ addr = "0.0.0.0"
 
 [events."push:JackKnifed/goki:refs/heads/master"]
 cmd = "/bin/sh"
-args = "/var/www/goki.pull"
+args = "/home/wiki/goki.pull"
 

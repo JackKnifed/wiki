@@ -1,7 +1,7 @@
 {
 	"Port": "80",
 	"Hostname": "hostbaitor.com",
-	"TemplateDir": "/home/wiki/templates",
+	"TemplateDir": "/home/wiki/templates/*.html",
 	"Redirects": [
 		{
 			"Requested": "/favicon.ico",

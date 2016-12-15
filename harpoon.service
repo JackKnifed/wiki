@@ -8,7 +8,7 @@ AssertFileIsExecutable=/usr/local/bin/harpoon
 User=%i
 Type=simple
 Environment=GITHUB_HOOK_SECRET_TOKEN=""
-ExecStart=/usr/local/bin/harpoon -c /var/www/harpoon.toml
+ExecStart=/usr/local/bin/harpoon -c /home/wiki/harpoon.toml
 Nice=5
 
 [Install]

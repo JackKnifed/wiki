@@ -5,7 +5,7 @@ AssertFileNotEmpty=/usr/local/bin/harpoon
 AssertFileIsExecutable=/usr/local/bin/harpoon
 
 [Service]
-User=%i
+User=wiki
 Type=simple
 Environment=GITHUB_HOOK_SECRET_TOKEN=""
 ExecStart=/usr/local/bin/harpoon -c /home/wiki/harpoon.toml

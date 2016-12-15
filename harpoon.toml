@@ -1,7 +1,5 @@
 port = 9001
 addr = "0.0.0.0"
 
-[events."push:JackKnifed/goki:refs/heads/master"]
-cmd = "/bin/sh"
-args = "/home/wiki/goki.pull"
-
+[events."push:JackKnifed/wiki:refs/heads/master"]
+cmd = "/home/wiki/goki.pull"

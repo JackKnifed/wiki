@@ -67,8 +67,8 @@
 				},
 				{
 					"ServerType": "fuzzy",
-					"Path": "wiki.index",
 					"Prefix": "/search/",
+					"Path": "index",
 					"Default": "wiki",
 					"Template": "search.html",
 					"FallbackTemplate": "search.html"
@@ -76,7 +76,7 @@
 				{
 					"ServerType": "field",
 					"Prefix": "/topic/",
-					"Path": "wiki.index",
+					"Path": "index",
 					"Default": "topic",
 					"Template": "topicList.html",
 					"FallbackTemplate": "topicList.html"
@@ -84,7 +84,7 @@
 				{
 					"ServerType": "field",
 					"Prefix": "/author/",
-					"Path": "wiki.index",
+					"Path": "index",
 					"Default": "author",
 					"Template": "authorList.html",
 					"FallbackTemplate": "authorList.html"

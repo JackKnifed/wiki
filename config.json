@@ -62,7 +62,7 @@
 					"FallbackTemplate":"search.html"
 				},
 				{
-					"ServerType": "fieldList",
+					"ServerType": "field",
 					"Prefix": "/topic/",
 					"Path": "/home/wiki/index",
 					"Default": "topic",
@@ -70,7 +70,7 @@
 					"FallbackTemplate":"topicList.html"
 				},
 				{
-					"ServerType": "fieldList",
+					"ServerType": "field",
 					"Prefix": "/author/",
 					"Path": "/home/wiki/index",
 					"Default": "author",

@@ -11,10 +11,7 @@ Sometimes a server is writing a lot to the disk, and it's not just swap usage. O
 Run this to gather data for 120 seconds.
 
 ```bash
-dmesg -c > /dev/null
-echo 1 >/proc/sys/vm/block_dump
-sleep 120
-echo 0 > /proc/sys/vm/block_dump
+dmesg -c > /dev/null; echo 1 >/proc/sys/vm/block_dump && sleep 120; echo 0 > /proc/sys/vm/block_dump
 ```
 
 Then, run this to parse the output:

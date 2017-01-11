@@ -3,8 +3,8 @@ export GIT_SSH=/home/wiki/git.ssh
 export GIT_DIR=/home/wiki/www/.git
 export GIT_WORK_TREE=/home/wiki/www
 
-/usr/bin/env /bin/git fetch
-/usr/bin/env /bin/git checkout master
-/usr/bin/env /bin/git pull
-/usr/bin/env /bin/git clean -f -d
-/usr/bin/env /bin/git reset --hard
+/usr/bin/env git fetch
+/usr/bin/env git checkout master
+/usr/bin/env git pull
+/usr/bin/env git clean -f -d
+/usr/bin/env git reset --hard

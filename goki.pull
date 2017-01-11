@@ -1,7 +1,7 @@
 #!/bin/sh
 export GIT_SSH=/home/wiki/git.ssh
-export GIT_DIR=/home/wiki/www/.git
-export GIT_WORK_TREE=/home/wiki/www
+export GIT_DIR=/home/wiki/.git
+export GIT_WORK_TREE=/home/wiki
 
 /usr/bin/env git fetch
 /usr/bin/env git checkout master

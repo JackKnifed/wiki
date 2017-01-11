@@ -154,11 +154,11 @@ This grabs the user-defined database users, and checks their respective cPanel a
 
 On a server with the new password hashing format, you can set a password of the old format with either:
 
-```mysql
+```
 SET PASSWORD for '$USER'@'$HOST' = OLD_PASSWORD('$PASSWORD');
 ```
 
-```mysql
+```
 UPDATE mysql.user SET Password = OLD_PASSWORD('$PASSWORD') WHERE User = '$USER' AND Host = '$Host';
 FLUSH PRIVILEGES;
 ```
@@ -277,7 +277,7 @@ mysqlcheck -o database table
 
 ### If Table Repair Fails ###
 
-notice> Only do this if the standard repair failed.
+warning> Only do this if the standard repair failed.
 
 ```bash
 mysqlcheck -r --use-frm database table
@@ -372,7 +372,7 @@ sleep 10
 mysql_upgrade --socket=/tmp/secure.sock
 ```
 
-ok> Wait, watch for errors.
+info> Wait, watch for errors.
 
 ```bash
 /etc/init.d/mysql restart
@@ -389,7 +389,7 @@ sleep 10
 mysql_upgrade --socket=/tmp/secure.sock
 ```
 
-ok> Wait, watch for errors.
+info> Wait, watch for errors.
 
 ```bash
 /etc/init.d/mysql restart

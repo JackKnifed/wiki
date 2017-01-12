@@ -10,11 +10,6 @@ Contribute
 
 To contribute, [please see the contribution page](/contrib.md).
 
-Written Pages
--------------
-
-See the [List of Pages](todo.md) for a list of pages that currently are written, or are planned.
-
 Features
 --------
 

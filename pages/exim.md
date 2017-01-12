@@ -21,13 +21,29 @@ Exim CheatNotes
 
 Delivery Test
 ```bash
-root@localhost# exim -bt alias@localdomain.com
-user@thishost.com
-    <-- alias@localdomain.com
-  router = localuser, transport = local_delivery
+exim -bt address@domain.com
 ```
 
+Remove frozen messages from queue
+```bash
+exiqgrep -z -i | xargs exim -Mrm
+```
 
+Thaw all frozen messages and attempt delivery
+```bash
+exiqgrep -z -i|xargs exim -Mt
+exim -q -v
+```
+
+Count `cwd=` lines in `exim_mainlog`
+```bash
+awk '$4 ~ /^cwd=/ {gsub('/cwd=/', "", $4); print $4}' /var/log/exim_mainlog|sort|uniq -c|sort
+```
+
+Print a summary of the messages in the queue
+```bash
+exim -bp|exiqsumm
+```
 
 Exim Flags
 --------
@@ -36,7 +52,10 @@ Exim Flags
 
 Test Delivery to Address (internal or external)
 ```bash
-exim -bt
+root@localhost# exim -bt alias@localdomain.com
+user@thishost.com
+    <-- alias@localdomain.com
+  router = localuser, transport = local_delivery
 ```
 
 Test Receipt from a given IP

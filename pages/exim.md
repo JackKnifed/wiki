@@ -16,15 +16,35 @@ If you want to read a message that has been delivered, you cannot get that from 
 
 Messages in the outgoing queue are either frozen, or thawed. If they are thawed, the next queue run will attempt to delivery that message. If they are frozen, they will thaw at the next given retry time.
 
-Commands
+Exim CheatNotes
+---------------
+
+Delivery Test
+```bash
+root@localhost# exim -bt alias@localdomain.com
+user@thishost.com
+    <-- alias@localdomain.com
+  router = localuser, transport = local_delivery
+```
+
+
+
+Exim Flags
 --------
 
-### Text Delivery for Address ###
+#### Debug information
+
+Test Delivery to Address (internal or external)
 ```bash
 exim -bt
 ```
 
-### Queue Management ###
+Test Receipt from a given IP
+```bash
+exim -bh 192.168.1.1
+```
+
+#### Queue Management
 Count Outgoing Messages
 ```bash
 exim -bpc
@@ -40,7 +60,7 @@ Run Queue
 exim -q
 ```
 
-### Queued Message Actions ###
+#### Actions for Queued Messages
 Print Header
 ```bash
 exim -Mvh <message id>
@@ -70,6 +90,70 @@ Delete Message
 ```bash
 exim -Mrm <message id>
 ```
+
+exiqgrep
+--------
+
+`exiqgrep` is a utility shipped with Exim.
+It is used to display information about the Exim outgoing message queue.
+
+#### exiqgrep Filtering
+
+The following flags restrict messages by the given conditions.
+
+Specific sender user/domain:
+```bash
+exiqgrep -f [user]@domain.com
+```
+
+Specific recipient user/domain:
+```bash
+exiqgrep -r [user]@domain.com
+```
+
+Messages older than 3600 seconds - 1 hour
+```bash
+exiqgrep -o 3600
+```
+
+Messages newer than 3600 seconds - 1 hour
+```bash
+exiqgrep -y 3600
+```
+
+Messages with the given size (regex match)
+```bash
+exiqgrep -s ^14.5$
+```
+
+Frozen messages
+```bash
+exiqgrep -z
+```
+
+Thawed messages
+```bash
+exiqgrep -z
+```
+
+#### exiqgrep output
+
+Nominal output looks like the following
+
+```bash
+```
+
+To just print the message IDs:
+```bash
+exiqgrep -i
+```
+
+Count the messages that meet the filters instead of printing results
+
+```bash
+exiqgrep -c
+```
+
 
 Smart Routes
 ------------

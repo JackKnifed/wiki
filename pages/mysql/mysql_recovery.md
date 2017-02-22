@@ -77,7 +77,7 @@ Then make sure you start/restart MySQL.
 On cPanel:
 
 ```bash
-/usr/local/cpanel/bin/tailwatchd --disable=Cpanel::TailWatch::ChkServd
+/usr/local/cpanel/libexec/tailwatchd --disable=Cpanel::TailWatch::ChkServd
 ```
 
 ### Prep ###
@@ -202,7 +202,7 @@ Clean up
 If a cPanel server, run the following:
 
 ```bash
-/usr/local/cpanel/bin/tailwatchd --enable=Cpanel::TailWatch::ChkServd
+/usr/local/cpanel/libexec/tailwatchd --enable=Cpanel::TailWatch::ChkServd
 \ls /var/cpanel/users/|xargs -L1 -I{} /usr/local/cpanel/bin/restoregrants --cpuser={} --db=mysql --all
 ```
 

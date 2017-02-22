@@ -77,7 +77,7 @@ Then make sure you start/restart MySQL.
 On cPanel:
 
 ```bash
-/usr/local/cpanel/bin/tailwatchd --disable=Cpanel::TailWatch::ChkServd
+/usr/local/cpanel/libexec/tailwatchd --disable=Cpanel::TailWatch::ChkServd
 ```
 
 ### Prep ###
@@ -178,7 +178,7 @@ find $dumpdest/dbdumps -maxdepth 1 -type f -name "*.sql"|awk -F'[/.]' '{print $(
 Reimport tables.
 
 ```bash
-find $dumpdest/tbldumps -maxdepth 1 -mindepth 1 -type d|xargs -L1 basename|awk '{print "CREATE DATABASE IF NOT EXISTS", $0;}'|mysql
+find $dumpdest/tbldumps -maxdepth 1 -mindepth 1 -type d|xargs -L1 basename|awk '{print "CREATE DATABASE IF NOT EXISTS", $0,";"}'|mysql
 find $dumpdest/tbldumps -maxdepth 2 -mindepth 2 -type f -name "*.sql"|xargs -L1 basename|tr '.' ' '|while read db tbl junk; do mysql $db < $dumpdest/tbldumps/$db/$db.$tbl.sql; done
 ```
 
@@ -202,7 +202,7 @@ Clean up
 If a cPanel server, run the following:
 
 ```bash
-/usr/local/cpanel/bin/tailwatchd --enable=Cpanel::TailWatch::ChkServd
+/usr/local/cpanel/libexec/tailwatchd --enable=Cpanel::TailWatch::ChkServd
 \ls /var/cpanel/users/|xargs -L1 -I{} /usr/local/cpanel/bin/restoregrants --cpuser={} --db=mysql --all
 ```
 

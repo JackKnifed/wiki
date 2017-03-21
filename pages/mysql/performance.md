@@ -44,6 +44,16 @@ mysql -Bse 'show variables like "datadir";'|awk '{print $2}'|xargs -I{} find {} 
 
 ok> Remember, `innodb_buffer_pool_size` caches hot InnoDB pages. `key_buffer_size` only caches MyISAM indexes.
 
+Disable `query_cache`
+---------------------
+
+The `query_cache` in MySQL is trash because of how it's written. Set the following two settings in the `my.cnf` and reboot MySQL:
+
+```
+query_cache_size = 0
+query_cache_type = 0
+```
+
 Putting `tmpdir` in `/dev/shm`
 ------------------------------
 

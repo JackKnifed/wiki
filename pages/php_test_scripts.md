@@ -15,6 +15,8 @@ A generic `phpinfo()` page.
 
 ```php
 <?php
+echo "PHP VERSION: " . phpversion() . "<br/>";
+echo "SAPI: " . php_sapi_name() . "<br/>";
 phpinfo();
 ?>
 ```
@@ -26,6 +28,8 @@ Prints out all of the `$_GET` variables.
 ```php
 <?php
 if($_GET['OHOK']) show_source(__FILE__) && die();
+echo "PHP VERSION: " . phpversion() . "<br/>";
+echo "SAPI: " . php_sapi_name() . "<br/>";
 echo "GET VARS available:<br>\n";
 foreach( $_GET as $name => $value ){
 		echo $name.'    '.$value."<br />\n";
@@ -40,6 +44,8 @@ Prints out all of the `$_SERVER` vars as PHP sees them.
 ```php
 <?php
 if($_GET['OHOK']) show_source(__FILE__) && die();
+echo "PHP VERSION: " . phpversion() . "<br/>";
+echo "SAPI: " . php_sapi_name() . "<br/>";
 echo "SERVER VARS available:<br>\n";
 foreach($_SERVER as $k=>$v){ echo "$k: ", (isset($v) ? $v : "NOT SET"), "<br/>\n"; }
 ?>
@@ -59,6 +65,8 @@ if ($_COOKIE['test_cookie']!='') {
 }
 
 setcookie('test_cookie',$test_cookie,time() + (86400)); // 86400 = 1 day
+echo "PHP VERSION: " . phpversion() . "<br/>";
+echo "SAPI: " . php_sapi_name() . "<br/>";
 echo "You have been to this page $test_cookie times.\n"
 ?>
 ```
@@ -70,6 +78,7 @@ Tests PHP sessions. Expected behavior is for the number to increase.
 ```php
 <?php
 if($_GET['OHOK']) show_source(__FILE__) && die();
+
 session_start();
 // Use $HTTP_SESSION_VARS with PHP 4.0.6 or less
 if (!isset($_SESSION['count'])) {
@@ -78,6 +87,8 @@ if (!isset($_SESSION['count'])) {
   $_SESSION['count']++;
 }
 
+echo "PHP VERSION: " . phpversion() . "<br/>";
+echo "SAPI: " . php_sapi_name() . "<br/>";
 // show how many times visited
 echo 'you have been to this page '.$_SESSION['count'].' times';
 ?>
@@ -90,6 +101,9 @@ Prints out the current `error_reporting` setting of PHP:
 ```php
 <?php
 if($_GET['OHOK']) show_source(__FILE__) && die();
+
+echo "PHP VERSION: " . phpversion() . "<br/>";
+echo "SAPI: " . php_sapi_name() . "<br/>";
 
 //set up my array for later
 $error_codes = array(
@@ -140,7 +154,9 @@ Checks the functionality of DNS requests within PHP by opening a connection to a
 <?php
 if($_GET['OHOK']) show_source(__FILE__) && die();
 
-//created by jhayhurst
+echo "PHP VERSION: " . phpversion() . "<br/>";
+echo "SAPI: " . php_sapi_name() . "<br/>";
+
 //this file tests a dns lookup to google (can be changed)
 //and also verifies the validity of this test by doing a connection to that location
 //in this case a fsockopen

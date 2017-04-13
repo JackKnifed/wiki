@@ -59,7 +59,7 @@ CURSQL=`/usr/bin/mysqladmin stat|awk '{print $4}'`
 
 HISTSQL=`/usr/bin/mysql -Bse 'show global status LIKE "Max_used_connections";'|awk '{print $2}'`
 
-APACHECONN=$(/usr/sbin/httpd status |awk '/requests\ currently\ being\ processed,/ {print $1}')
+APACHECONN=$(/usr/sbin/apachectl status |awk '/requests\ currently\ being\ processed,/ {print $1}')
 
 # checks to see if $APACHECONN is numeric
 if [[ $APACHECONN != *[0-9]* ]]
@@ -80,7 +80,7 @@ then
 	/bin/netstat -nut|awk '$4 ~ /:(80|443)/ {gsub(/:[0-9]*$/, "", $5); print $5, $6}'|sort|uniq -c|sort -n|tail -n50 >> $DIR/$FILE
 	top -bcn1 >> $DIR/$FILE
 	ps auxf >> $DIR/$FILE
-	[ ! -z "$APACHEFALLBACK" ] && echo "Apache Fallback Triggered" || /sbin/service httpd fullstatus >> $DIR/$FILE 2> /dev/null
+#	[ ! -z "$APACHEFALLBACK" ] && echo "Apache Fallback Triggered" || /sbin/service httpd fullstatus >> $DIR/$FILE 2> /dev/null
 fi
 ```
 

@@ -30,7 +30,7 @@ Set the root password
 Next, automatically set the root pw by using the following (and hit enter)
 
 ```bash
-awk -F'=' '$1 ~ /^pass/ {print $2;}' /root/.my.cnf|xargs -L1 echo|awk '{print "SET PASSWORD FOR '\''root'\''@'\''localhost'\'' = PASSWORD('\''" $0 "'\'');"}'|tail -n1|mysql -p
+awk -F'=' '$1 ~ /^pass/ {print $2;}' /root/.my.cnf|xargs -L1 echo|awk '{print "UPDATE mysql.user SET Password=PASSWORD('\''" $0 "'\'') WHERE User = '\''root'\'';flush privileges;";};'|tail -n1|mysql -p
 ```
 
 Import missing tables

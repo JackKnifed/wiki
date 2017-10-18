@@ -37,5 +37,14 @@ You then also need to create the file `/etc/securence_domains` (or similar, as a
 In that file you need to list all domains that you want to be routed through that destination.
 
 You will likely also have to write your own transport for the `hosts_require_tls` setting - if the customer wants that.
-Authentication likely also goes in the transport.
+Authentication likely also goes in the transport. An example transport is below:
 
+```
+securence_smtp:
+  driver = smtp
+  hosts_require_tls = smarthost.securence.com
+  interface = <; ${if exists {/etc/mailips}{${lookup{$sender_address_domain}lsearch{/etc/mailips}{$value}{${lookup{$sender_address_domain}lsearch{/etc/mailips}{$value}{${lookup{${perl{get_sender_from_uid}}}lsearch*{/etc/mailips}{$value}{}}}}}}}}
+  helo_data = ${if exists {/etc/mailhelo}{${lookup{$sender_address_domain}lsearch{/etc/mailhelo}{$value}{${lookup{$sender_address_domain}lsearch{/etc/mailhelo}{$value}{${lookup{${perl{get_sender_from_uid}}}lsearch*{/etc/mailhelo}{$value}{$primary_hostname}}}}}}}{$primary_hostname}}
+```
+
+IDK tbh I mostly shitpost anyway.

@@ -163,6 +163,10 @@ The OpenSSH server configuration file is typically at `/etc/ssh/sshd_config`. So
 * `PubkeyAuthentication` - allows SSH keys to login
 * `AuthorizedKeysFile` - allows you to specifiy an alternate location
  * Default is `%h/.ssh/authorized_keys` - `%h` is replaced with your user's homedir.
+* `StrictHostKeyChecking` - default is ask, which asks you to add a key every time you connect to a server
+ * `yes` sets OpenSSH so you cannot connect to servers not in yours `AuthorizedKeysFile`
+ * `no` automatically adds new keys to `AuthorizedKeysFile` without asking when you run across unknown servers
+ * All three options will refuse to connect on unknown connections
 
 There's not a lot of options there - that's because for the most part OpenSSH just works.
 

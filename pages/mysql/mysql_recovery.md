@@ -204,6 +204,7 @@ If a cPanel server, run the following:
 ```bash
 /usr/local/cpanel/libexec/tailwatchd --enable=Cpanel::TailWatch::ChkServd
 \ls /var/cpanel/users/|xargs -L1 -I{} /usr/local/cpanel/bin/restoregrants --cpuser={} --db=mysql --all
+mysql -e 'flush privileges;'
 ```
 
 On all servers, notify the customer the location of:

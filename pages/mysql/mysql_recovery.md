@@ -130,7 +130,7 @@ Prep Tables
 When you want to move onto tables, run the following to prep.
 
 ```bash
-cat $dumpdest/dbs.bad|while read db; do mkdir -p $dumpdest/bad_dumps $dumpdest/tbldumps/$db; mv $dumpdest/dbdumps/$db.sql $dumpdest/baddbs; echo "SHOW TABLES FROM $db;"|mysql -Bs > $dumpdest/$db.tbl.in; done
+cat $dumpdest/dbs.bad|while read db; do echo "SHOW TABLES FROM $db;"|mysql -Bs > $dumpdest/$db.tbl.in; done
 ```
 
 Dump Tables

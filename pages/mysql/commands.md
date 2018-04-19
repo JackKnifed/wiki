@@ -12,7 +12,9 @@ Extracting data from MySQL
 ### Dump all databases ###
 
 ```bash
-echo "SHOW DATABASES;" | mysql -Bs |while read i ; do echo Dumping $i ; mysqldump --single-transaction $i > $i.sql ; done 
+echo "SHOW DATABASES;" | mysql -Bs |whi
+l
+e read i ; do echo Dumping $i ; mysqldump --single-transaction $i > $i.sql ; done 
 ```
 
 ### Dump and compress all databases###
@@ -215,7 +217,7 @@ MySQL database backups
 Kill all running MySQL queries
 ------------------------------
 ```bash
-mysql -Bse 'show processlist;'|awk '{print $1}'|xargs -L1 mysqladmin kill
+mysql -Bse 'show processlist;'| awk '$2 !~ /root/ {print $1}'|xargs -L1 mysqladmin kill
 ```
 
 List all table sizes

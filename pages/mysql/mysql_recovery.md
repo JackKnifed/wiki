@@ -120,7 +120,7 @@ success> Run multiple times. Does not repeat good DBs and delays on bad.
 ```bash
 echo 'starting db dumps' | tee -a $dumpdest/export.log
 [[ -f $dumpdest/dbs.bad ]] && mv $dumpdest/dbs.bad $dumpdest/dbs.in
-cat $dumpdest/dbs.in|while read db; do echo 'dumping' $db | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events $db  2>&1 >$dumpdest/dbdumps/$db.sql | tee -a $dumpdest/export.log; if [[ $? -ne 0 ]]; then echo $db >> $dumpdest/dbs.bad ; sleep 5 ; rm -f $dumpdest/dbdumps/$db.sql; fi; done
+cat $dumpdest/dbs.in|while read db; do echo 'dumping' $db | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events $db  2>>$dumpdest/export.log&1 >$dumpdest/dbdumps/$db.sql; if [[ $? -ne 0 ]]; then echo $db >> $dumpdest/dbs.bad ; sleep 5 ; rm -f $dumpdest/dbdumps/$db.sql; fi; done
 rm -f $dumpdest/dbs.in
 ```
 
@@ -141,7 +141,7 @@ success> Run multiple times. Does not repeat good tables and delays on bad.
 ```bash
 echo 'starting table dumps' | tee -a $dumpdest/export.log
 find $dumpdest -mindepth 1 -maxdepth 1 -type f -name "*.tbl.bad"|awk '{orig=$0; gsub(".tbl.bad$", ".tbl.in", $0); print "mv", orig, $0}'|bash
-find $dumpdest -mindepth 1 -maxdepth 1 -type f -name "*.tbl.in"|awk -F'/' '{gsub(".tbl.in", "", $NF); print $NF;}'|while read db; do cat $dumpdest/$db.tbl.in|while read tbl; do echo 'dumping' $db $tbl | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events $db $tbl 2>&1 >$dumpdest/tbldumps/$db/$db.$tbl.sql | tee -a $dumpdest/export.log; if [[ $? -ne 0 ]] ; then echo $tbl >> $dumpdest/$db.tbl.bad ; sleep 5 ; rm -f $dumpdest/tbldumps/$db/$db.$tbl.sql; fi; done; rm -f $dumpdest/$db.tbl.in; done
+find $dumpdest -mindepth 1 -maxdepth 1 -type f -name "*.tbl.in"|awk -F'/' '{gsub(".tbl.in", "", $NF); print $NF;}'|while read db; do cat $dumpdest/$db.tbl.in|while read tbl; do echo 'dumping' $db $tbl | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events $db $tbl 2>>$dumpdest/export.log >$dumpdest/tbldumps/$db/$db.$tbl.sql; if [[ $? -ne 0 ]] ; then echo $tbl >> $dumpdest/$db.tbl.bad ; sleep 5 ; rm -f $dumpdest/tbldumps/$db/$db.$tbl.sql; fi; done; rm -f $dumpdest/$db.tbl.in; done
 ```
 
 success> Last ditch attempt to grab the structure of any bad tables.
@@ -150,7 +150,7 @@ danger> Will not retrieve data - like truncating tables.
 ```bash
 echo 'starting table structure panic' | tee -a $dumpdest/export.log
 find $dumpdest -mindepth 1 -maxdepth 1 -type f -name "*.tbl.bad"|awk '{orig=$0; gsub(".tbl.bad$", ".tbl.in", $0); print "mv", orig, $0}'|bash
-find $dumpdest -mindepth 1 -maxdepth 1 -type f -name "*.tbl.in"|awk -F'/' '{gsub(".tbl.in", "", $NF); print $NF;}'|while read db; do cat $dumpdest/$db.tbl.in|while read tbl; do echo 'dumping' $db $tbl | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events --no-data $db $tbl 2>&1 >$dumpdest/tbldumps/$db/$db.$tbl.create | tee -a $dumpdest/export.log; if [[ $? -ne 0 ]] ; then echo $tbl >> $dumpdest/$db.tbl.bad ; sleep 5 ; rm -f $dumpdest/tbldumps/$db/$db.$tbl.create; fi; done; rm -f $dumpdest/$db.tbl.in; done
+find $dumpdest -mindepth 1 -maxdepth 1 -type f -name "*.tbl.in"|awk -F'/' '{gsub(".tbl.in", "", $NF); print $NF;}'|while read db; do cat $dumpdest/$db.tbl.in|while read tbl; do echo 'dumping' $db $tbl | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events --no-data $db $tbl 2>>$dumpdest/export.log >$dumpdest/tbldumps/$db/$db.$tbl.create ; if [[ $? -ne 0 ]] ; then echo $tbl >> $dumpdest/$db.tbl.bad ; sleep 5 ; rm -f $dumpdest/tbldumps/$db/$db.$tbl.create; fi; done; rm -f $dumpdest/$db.tbl.in; done
 ```
 
 Config Settings

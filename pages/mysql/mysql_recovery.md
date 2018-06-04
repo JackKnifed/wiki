@@ -120,7 +120,7 @@ success> Run multiple times. Does not repeat good DBs and delays on bad.
 ```bash
 echo 'starting db dumps' | tee -a $dumpdest/export.log
 [[ -f $dumpdest/dbs.bad ]] && mv $dumpdest/dbs.bad $dumpdest/dbs.in
-cat $dumpdest/dbs.in|while read db; do echo 'dumping' $db | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events $db  2>>$dumpdest/export.log&1 >$dumpdest/dbdumps/$db.sql; if [[ $? -ne 0 ]]; then echo $db >> $dumpdest/dbs.bad ; sleep 5 ; rm -f $dumpdest/dbdumps/$db.sql; fi; done
+cat $dumpdest/dbs.in|while read db; do echo 'dumping' $db | tee -a $dumpdest/export.log; mysqldump --single-transaction --triggers --routines --events $db  2>>$dumpdest/export.log >$dumpdest/dbdumps/$db.sql; if [[ $? -ne 0 ]]; then echo $db >> $dumpdest/dbs.bad ; sleep 5 ; rm -f $dumpdest/dbdumps/$db.sql; fi; done
 rm -f $dumpdest/dbs.in
 ```
 

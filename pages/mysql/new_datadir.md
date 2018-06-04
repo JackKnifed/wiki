@@ -5,33 +5,24 @@ title: MySQL New Datadir
 Creating MySQL datadir
 ======================
 
-Create the directory
+Create a new datadir
 --------------------
 
 info> It is assumed here that you're creating your new datadir at `/var/lib/mysql.new` - adjust accordingly.
 
-success> MySQL should be stopped.
-
 ```bash
+/scripts/restartsrv_mysql --stop
 [[ -d /var/lib/mysql ]] && mv /var/lib/mysql /var/lib/mysql.bad.$(date -u +%Y-%m-%d-%H:%M:%S%z)
 mkdir /var/lib/mysql
 chown -R mysql:mysql /var/lib/mysql
 chmod 751 /var/lib/mysql
 sudo -u mysql mysql_install_db --datadir=/var/lib/mysql
+/scripts/restartsrv_mysql --restart
+awk -F'=' '$1 ~ /^pass/ {print $2;}' ~/.my.cnf|xargs -L1 printf 'UPDATE mysql.user SET Password=PASSWORD("%s") WHERE User="root";' |head -n1 |mysql --password=
+mysql -e "FLUSH PRIVILEGES;" --password=
 ```
 
 MySQL will automatically create the items required for InnoDB on boot.
-
-success> Startup MySQL now.
-
-Set the root password
----------------------
-
-Next, automatically set the root pw by using the following (and hit enter)
-
-```bash
-awk -F'=' '$1 ~ /^pass/ {print $2;}' /root/.my.cnf|xargs -L1 echo|awk '{print "UPDATE mysql.user SET Password=PASSWORD('\''" $0 "'\'') WHERE User = '\''root'\'';flush privileges;";};'|tail -n1|mysql --password=
-```
 
 Import missing tables
 ---------------------
